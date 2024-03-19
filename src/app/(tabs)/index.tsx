@@ -1,15 +1,6 @@
-import { StyleSheet, Text, View, Image, FlatList } from "react-native";
-import products from "@/assets/data/products";
-import ProductListItem from "@/src/components/ProductListItem";
+import { Redirect, Tabs } from "expo-router";
 
-export default function MenuScreen() {
-  return (
-    <FlatList
-      data={products}
-      renderItem={({ item }) => <ProductListItem product={item} />}
-      numColumns={2}
-      columnWrapperStyle={{ gap: 10 }} // This is being used to have spacing between columns
-      contentContainerStyle={{ gap: 10, padding: 10 }} // spacing between rows (GAP) and Spacing all around container (PADDING)
-    />
-  );
+export default function TabIndex(){
+
+    return( <Redirect href={'/(tabs)/menu'} /> );// (tabs) path is optional we can also use /menu instead 
 }

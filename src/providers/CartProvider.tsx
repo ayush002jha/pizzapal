@@ -10,13 +10,15 @@ type CartType = {
     items: Array<CartItem>;
     addItem: (product:Product, size:CartItem['size'])=>void;
     updateQuantity: (itemId: string, amount: -1 | 1)=>void;
+    total: number;
 }
 
 // Create a context....it has two methods Provider and Consumer
 const CartContext = createContext<CartType>({
     items: [],
     addItem: ()=>{},
-    updateQuantity: ()=>{}
+    updateQuantity: ()=>{},
+    total: 0
 })
 
 // Provider is used to provide the values
@@ -58,10 +60,14 @@ const CartProvider = ({children}:PropsWithChildren)=>{
         setItems(updatedItems.filter((item)=>item.quantity>0));
     }
 
+    // Total Items inside the cart
+    // reduce is usefull in taking sum, avg etc... it takes a accumalator, iterate item function and intial value for accumulator
+    const total = items.reduce((sum, item)=>sum+=item.product.price*item.quantity,0)
+
     return (
         // value here is what we export basically and make available for consumer
         //  All the children wrapped inside the provider will be able consume these values
-        <CartContext.Provider value={{items, addItem, updateQuantity}}>
+        <CartContext.Provider value={{items, addItem, updateQuantity, total}}>
             {children}
         </CartContext.Provider>
     );

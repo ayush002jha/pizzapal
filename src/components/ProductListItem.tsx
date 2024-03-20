@@ -2,7 +2,7 @@ import { View, Image, Text, StyleSheet, Pressable } from "react-native";
 import Colors from "../constants/Colors";
 // Here we have imported the Types 
 import { Product } from "../types";
-import { Link } from "expo-router";
+import { Link, useSegments } from "expo-router";
 
 // To apply the types to all the incoming props in this component, its better to wrap this way
 type ProductListItemProps = {
@@ -13,8 +13,11 @@ export const defaultPizzaImage = 'https://notjustdev-dummy.s3.us-east-2.amazonaw
 
 
 const ProductListItem = ({ product }: ProductListItemProps) => {
+  // It gives us the array of splitted pathway like admin,menu,id
+  const segments = useSegments();
+
   return (
-    <Link href={`/(tabs)/menu/${product.id}`} asChild>
+    <Link href={`../${segments[0]}/menu/${product.id}`} asChild>
       <Pressable  style={styles.container}>
         {/* Since the image cannot have null uri so we had to pass a default image to it for fallback*/}
         <Image source={{ uri: product.image || defaultPizzaImage }} style={styles.image} resizeMode="contain" />

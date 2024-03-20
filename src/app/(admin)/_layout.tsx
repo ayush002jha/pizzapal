@@ -27,6 +27,7 @@ export default function TabLayout() {
           backgroundColor: Colors.light.tint
         }
       }}>
+        {/* To remove the wnwanted tabs screens */}
         <Tabs.Screen name="index" options={{href:null}}/>
       <Tabs.Screen
         name="menu"
@@ -38,10 +39,11 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="orders"
         options={{
           title: 'Orders',
           tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
+          headerShown:false
         }}
       />
     </Tabs>

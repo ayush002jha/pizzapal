@@ -15,7 +15,7 @@ export const defaultPizzaImage = 'https://notjustdev-dummy.s3.us-east-2.amazonaw
 const ProductListItem = ({ product }: ProductListItemProps) => {
   // It gives us the array of splitted pathway like admin,menu,id
   const segments = useSegments();
-
+  // console.log(segments)
   return (
     <Link href={`../${segments[0]}/menu/${product.id}`} asChild>
       <Pressable  style={styles.container}>

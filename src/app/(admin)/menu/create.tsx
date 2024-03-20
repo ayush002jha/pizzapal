@@ -1,12 +1,15 @@
-import { View, Text, StyleSheet, TextInput , Image} from 'react-native'
+import { View, Text, StyleSheet, TextInput , Image, Alert} from 'react-native'
 import React, { useState } from 'react'
 import Button from '@/src/components/Button';
 import { defaultPizzaImage } from '@/src/components/ProductListItem';
 import Colors from '@/src/constants/Colors';
 import * as ImagePicker from 'expo-image-picker';
-import { Stack } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
 
 const CreateProductScreen = () => {
+
+    const {id} = useLocalSearchParams();
+    const isUpdating = !!id;
 
     // State variables for input fields
     const [name, setName] = useState<string>("");
@@ -41,12 +44,30 @@ const CreateProductScreen = () => {
         return true;
     };
 
+    // Redirector based on update or create a product
+    const onSubmit = () => {
+        if (isUpdating){
+            onUpdate();
+        }else{
+            onCreate();
+        }
+    }
+
     const onCreate = () => {
         // Only submit the data if validated first
         if(!validateInputs()){
             return;
         }
         console.warn("Creating Product")
+        resetFields()
+    }
+
+    const onUpdate = () => {
+        // Only submit the data if validated first
+        if(!validateInputs()){
+            return;
+        }
+        console.warn("Updating Product")
         resetFields()
     }
 
@@ -68,9 +89,27 @@ const CreateProductScreen = () => {
         }
       };
 
+    // Delete Functionality with CONFIRMATION DIALOGUE
+    const onDelete = ()=>{
+        console.warn("DELETED")
+    };
+
+    const confirmDelete = ()=>{
+        Alert.alert('Confirm','Are you sure you want to delete this product',[
+            {
+                text:"Cancel"
+            },
+            {
+                text: "Delete",
+                style: "destructive",
+                onPress: onDelete
+            }
+        ])
+    };
+
     return (
         <View style={style.container}>
-            <Stack.Screen options={{title:"Create Product", headerTitleAlign:"center"}} />
+            <Stack.Screen options={{title:isUpdating?"Update Product":"Create Product", headerTitleAlign:"center"}} />
 
             <Image source={{uri:image||defaultPizzaImage}} style={style.image} />
             <Text onPress={pickImage} style={style.textButton}>Select Image</Text>
@@ -82,7 +121,9 @@ const CreateProductScreen = () => {
             <TextInput value={price} onChangeText={setPrice} placeholder='9.99' style={style.input} keyboardType='numeric' />
 
             <Text style={{color:"red"}}>{errors}</Text>
-            <Button onPress={onCreate} text='Create' />
+            <Button onPress={onSubmit} text={isUpdating?'Update':'Create'} />
+
+            {isUpdating && <Text onPress={confirmDelete} style={[style.textButton,{color:"red"}]}>Delete</Text>}
 
         </View>
     )

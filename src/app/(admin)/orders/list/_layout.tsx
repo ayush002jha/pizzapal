@@ -16,7 +16,7 @@ export default function OrderListNavigator(){
         // keep flex 1 for it to work and occupy the space
         // we can pass edge prop to apply padding to specific side only
         <SafeAreaView edges={['top']} style={{flex:1, backgroundColor:"white"}}>
-        <TopTabs>
+        <TopTabs >
             <TopTabs.Screen name='index' options={{title:"Active"}} />
         </TopTabs>
         </SafeAreaView>
